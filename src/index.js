@@ -89,6 +89,27 @@ class Game extends React.Component {
     });
   }
 
+  getLastPosition(move, history) {
+    if (Object.keys(history).length >= 2) {
+      let prevState = history[move-1].squares;
+      let curState = history[move].squares;
+      for (let i=0; i<=history[0].squares.length; i++) {
+        if (prevState[i] !== curState[i]) {
+          return ('(' + this.mapPosToCol(i).toString() + ', ' + this.mapPosToRow(i).toString() + ')');
+        }
+      }
+    }
+    return -1;
+  }
+
+  mapPosToCol(position) {
+    return position % 3;
+  }
+
+  mapPosToRow(position) {
+    return Math.floor(position / 3);
+  }
+
   jumpTo(step) {
     this.setState({
       stepNumber: step,
@@ -100,10 +121,9 @@ class Game extends React.Component {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
-
     const moves = history.map((step, move) => {
       const desc = move ?
-        'Go to move #' + move :
+        'Go to move #' + move + ': ' + (move % 2 === 0 ? 'O' : 'X') + ' -> ' + this.getLastPosition(move, history) :
         'Go to game start';
       return (
         <li key={move}>
