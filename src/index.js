@@ -69,6 +69,7 @@ class Game extends React.Component {
       }],
       xIsNext: true,
       stepNumber: 0,
+      bolded: false,
     };
   }
 
@@ -127,7 +128,7 @@ class Game extends React.Component {
         'Go to game start';
       return (
         <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{desc} </button>
+            <button style={{this.state.stepNumber === move ? "fontWeight: 'bold'" : "fontWeight: 'normal'"}} onClick={() => {this.jumpTo(move)}}>{desc}</button>
         </li>
       );
     });
