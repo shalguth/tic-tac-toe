@@ -20,26 +20,29 @@ class Board extends React.Component {
     );
   }
 
-  render() {
+  renderRow(row) {
+    const squares = [];
+    const offset = row * this.props.boardColNum;
+
+    for (let s = 0; s < this.props.boardColNum; s++) {
+      squares.push(
+        this.renderSquare(offset + s),
+      );
+    }
+
     return (
-      <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+      <div className="board-row">
+        {squares}
       </div>
-    );
+    )
+  }
+
+  render() {
+    const rows = []
+    for (let r = 0; r < this.props.boardRowNum; r++) {
+      rows.push(this.renderRow(r));
+    }
+    return <div>{rows}</div>;
   }
 }
 
@@ -90,7 +93,7 @@ class Game extends React.Component {
         'Go to game start';
       return (
         <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+          <button onClick={() => this.jumpTo(move)}>{desc} </button>
         </li>
       );
     });
@@ -106,7 +109,10 @@ class Game extends React.Component {
         <div className="game-board">
           <Board
             squares={current.squares}
-            onClick={(i) => this.handleClick(i)}/>
+            onClick={(i) => this.handleClick(i)}
+            boardRowNum={3}
+            boardColNum={3}
+          />
         </div>
         <div className="game-info">
           <div>{status}</div>
